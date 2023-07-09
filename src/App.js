@@ -89,9 +89,9 @@ function App() {
             Are you sure to connect to {queryServerInfo.instanceName} (URL: {serverUrl}) ?
             <br />
             <br />
-            Instance description: {queryServerInfo.instanceDescription}<br />
-            Instance server time: {queryServerInfo.serverTime}<br />
-            Instance XMS version: codename={queryServerInfo.coreCodeName}; buildNumber={queryServerInfo.coreBuildNumber}<br />
+            <span style={{fontWeight: "bold"}}>Instance description</span>: {queryServerInfo.instanceDescription}<br />
+            <span style={{fontWeight: "bold"}}>Instance server time</span>: {queryServerInfo.serverTime}<br />
+            <span style={{fontWeight: "bold"}}>Instance XMS version</span>: codename={queryServerInfo.coreCodeName}; buildNumber={queryServerInfo.coreBuildNumber}<br />
           </Mui.Typography>
         </Mui.DialogContent>
         <Mui.DialogActions>
