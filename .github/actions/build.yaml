@@ -1,0 +1,105 @@
+name: Node.js CI
+
+on:
+  push:
+    branches: ["master"]
+  pull_request:
+    branches: ["master"]
+
+env:
+  GH_TOKEN: ${{ secrets.GH_TOKEN }}
+
+jobs:
+  linux:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [19.5.0]
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - run: |
+          npm install
+
+      - name: build linux app
+        run: |
+          npm run package
+
+      - name: cleanup artifacts
+        run: |
+          npx rimraf "dist/!(*.exe|*.dmg|*.AppImage)"
+
+      - name: upload artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: linux-amd64
+          path: dist
+
+  macos:
+    runs-on: macos-10.15
+    strategy:
+      matrix:
+        node-version: [19.5.0]
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - run: |
+          npm install
+
+      - name: build macos app
+        run: |
+          npm run package
+
+      - name: cleanup artifacts
+        run: |
+          npx rimraf "dist/!(*.exe|*.dmg|*.AppImage)"
+
+      - name: upload artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: macos-amd64
+          path: dist
+
+  windows:
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        node-version: [19.5.0]
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - run: |
+          npm install
+
+      - name: build windows app
+        run: |
+          npm run package-win
+
+      - name: cleanup artifacts
+        run: |
+          dir dist | where {$_. name -notlike '*.exe*'} | Remove-Item -Recurse -force
+
+      - name: upload artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: windows-amd64
+          path: dist
