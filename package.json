@@ -2,20 +2,40 @@
   "name": "xms-desktop",
   "version": "0.1.0",
   "private": true,
+  "main": "electron/main.js",
+  "homepage": "./",
   "dependencies": {
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
+    "@mui/icons-material": "^5.13.7",
+    "@mui/material": "^5.13.7",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+    "axios": "^1.4.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-scripts": "5.0.1",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "export BROWSER=none && react-scripts start",
+    "start-win": "set BROWSER=none && react-scripts start",
+    "start-electron": "export ELECTRON_START_URL=http://localhost:3000 && electron .",
+    "start-electron-win": "set ELECTRON_START_URL=http://localhost:3000 && electron .",
     "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "build-electron": "mkdir build/src && cp -r electron/. build/electron",
+    "build-electron-win": "mkdir build\\src && Xcopy /E /I /Y electron build\\electron",
+    "package": "npm run build && npm run build-electron && electron-builder build -c.extraMetadata.main=build/electron/main.js --publish never",
+    "package-win": "npm run build && npm run build-electron-win && electron-builder build -c.extraMetadata.main=build/electron/main.js --publish never"
+  },
+  "build": {
+    "appId": "com.xtherdevteam.xmediacenter2",
+    "productName": "XmediaCenter2",
+    "files": [
+      "build/**/*",
+      "node_modules/**/*"
+    ]
   },
   "eslintConfig": {
     "extends": [
@@ -34,5 +54,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "electron": "^25.2.0",
+    "electron-builder": "^24.4.0"
   }
 }
