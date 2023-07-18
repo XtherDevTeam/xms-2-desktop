@@ -5,6 +5,17 @@ const url = require('url');
 let mainWindow;
 
 const createWindow = () => {
+  let fuckyouall = (window) => {
+    window.webContents.setWindowOpenHandler((details) => {
+      return {
+        action: 'allow',
+        overrideBrowserWindowOptions: {
+          'width': 1280,
+          'height': 700,
+        }
+      }
+    })
+  }
   mainWindow = new BrowserWindow({ width: 1280, height: 700, show: false });
   mainWindow.loadURL(
     !app.isPackaged
@@ -14,16 +25,17 @@ const createWindow = () => {
         protocol: 'file:',
         slashes: true,
       })
-  );
+  )
+  fuckyouall(mainWindow)
 
   mainWindow.once('ready-to-show', () => {
-    mainWindow.show();
-  });
+    mainWindow.show()
+  })
 
   mainWindow.on('closed', () => {
-    mainWindow = null;
-  });
-};
+    mainWindow = null
+  })
+}
 
 app.on('ready', createWindow);
 
