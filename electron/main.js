@@ -12,11 +12,12 @@ const createWindow = () => {
         overrideBrowserWindowOptions: {
           'width': 1280,
           'height': 700,
+          'autoHideMenuBar': true
         }
       }
     })
   }
-  mainWindow = new BrowserWindow({ width: 1280, height: 700, show: false });
+  mainWindow = new BrowserWindow({ width: 1280, height: 700, show: false, autoHideMenuBar: true });
   mainWindow.loadURL(
     !app.isPackaged
       ? process.env.ELECTRON_START_URL
